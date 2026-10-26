@@ -1,9 +1,8 @@
-import { Schema, model } from "mongoose";
-import { User } from "./User.model.js";
+import mongoose, { Schema, model } from "mongoose";
 import { z } from "zod";
 export const regexBucket = {
   numberOnly: /^[0-9]+$/,
-  letterOnly: /^[A-Za-z]+$/,
+  letterOnly: /^[A-Za-z\s]+$/,
   IndianDateOnly: /^(0[1-9]|[12][0-9]|3[01])[-/](0[1-9]|1[0-2])[-/]\d{4}$/,
 };
 export const validateProduct = z.object({
@@ -19,12 +18,9 @@ export const validateProduct = z.object({
     .min(30, "please describe more about the product")
     .max(350, "please make the description shorter!"),
   tags: z
-    .array(z.string().min(1).max(10))
+    .array(z.string().min(1).max(25,"too big....."))
     .min(3, "atlest mention three product relative tags")
-    .max(
-      10,
-      "max 10 tags allowed! and are more than sufficient for product",
-    )
+    .max(10, "max 10 tags allowed! and are more than sufficient for product")
     .default([]),
   price: z
     .string()
@@ -60,33 +56,43 @@ export const validateProduct = z.object({
     }),
 });
 
-export const productSchema = new Schema({
-    name: {
-        type: String,
-        required: [true,"please provide the product name"],
-        trim: true,
-        lowercase: true,
-    },
-    description: {
-        type: String,
-        required: [true,"plese give the product description"],
-        trim: true,
-        lowercase: true,
-    },
-    tags: {
-        type: [String],
-        required: [true,{message: "please enter alleast one relevent tag"}],
-        default: [],
-    },
-    price: {
-      type: String,
-      required: [true,"plese enter the price"],
-      match: [regexBucket.numberOnly,{message:"please enter price in numbers"}]
-    },
-    ExpiryDate: {
-      type: Date,
-      required: [true,"please enter the expiry date"],
-      match: [regexBucket.IndianDateOnly]
-    }
+const productSchema = new Schema({
+  name: {
+    type: String,
+    required: [true, "please provide the product name"],
+    trim: true,
+    lowercase: true,
+  },
+  description: {
+    type: String,
+    required: [true, "please give the product description"],
+    trim: true,
+    lowercase: true,
+  },
+  tags: {
+    type: [String],
+    required: [true, { message: "please enter alleast one relevent tag" }],
+    default: [],
+  },
+  price: {
+    type: String,
+    required: [true, "plese enter the price"],
+    match: [
+      regexBucket.numberOnly,
+      { message: "please enter price in numbers" },
+    ],
+  },
+  ExpiryDate: {
+    type: Date,
+    required: [true, "please enter the expiry date"],
+    match: [
+      regexBucket.IndianDateOnly,
+      { message: "please make date in DD/MM/YYYY OR DD-MM-YYYY FORMAT" },
+    ],
+  },
+  // also include the bySeller feild later
+},{timestamps: true});
 
-})
+ export const ProductRegister = model("product", productSchema);
+
+

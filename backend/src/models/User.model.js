@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { lowercase, trim, z } from "zod";
+import { z } from "zod";
 
 export const validateUser = z.object({
   username: z
