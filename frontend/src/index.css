@@ -1,1 +1,136 @@
+@import url('https://googleapis.com');
 @import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-serif: "DM Serif Display", serif;
+  --font-sans: "Inter", sans-serif;
+
+  /* Colors */
+  --color-cream: #FFFCF5;
+  --color-sand: #F5EDE0;
+
+  --color-forest: #2D5A27;
+  --color-forest-dark: #1A3A16;
+  --color-forest-light: #3D7A35;
+
+  --color-saffron: #D4A843;
+  --color-saffron-light: #E8C96A;
+  --color-saffron-dark: #B8860B;
+
+  --color-spice-red: #B8421E;
+  --color-spice-orange: #D4652B;
+  --color-spice-yellow: #E8A838;
+}
+
+/* 4. Optional: Apply your new defaults to the app base */
+@layer base {
+  body {
+    @apply bg-cream text-forest-dark font-sans antialiased;
+  }
+}
+html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; }
+
+    /* Hero parallax */
+    .hero-bg {
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+    }
+    @media (max-width: 768px) {
+      .hero-bg { background-attachment: scroll; }
+    }
+
+    /* Card hover */
+    .spice-card {
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+    }
+    .spice-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 48px -12px rgba(45, 90, 39, 0.12);
+    }
+    .spice-card:hover .card-img {
+      transform: scale(1.05);
+    }
+    .spice-card .card-img {
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* Add button */
+    .add-btn {
+      transition: all 0.2s ease;
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    .spice-card:hover .add-btn {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Nav transition */
+    .nav-scrolled {
+      background: rgba(255, 252, 245, 0.95) !important;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 rgba(45, 90, 39, 0.08);
+    }
+
+    /* Story section */
+    .story-img {
+      transition: transform 8s ease;
+    }
+    .story-section:hover .story-img {
+      transform: scale(1.05);
+    }
+
+    /* Cart drawer */
+    .cart-drawer {
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .cart-drawer.open { transform: translateX(0); }
+    .cart-backdrop {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .cart-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    /* Toast */
+    .toast {
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Marquee */
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      animation: marquee 20s linear infinite;
+    }
+
+    /* Badge */
+    @keyframes pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+      100% { transform: scale(1); }
+    }
+    .badge-pop { animation: pop 0.3s ease; }
